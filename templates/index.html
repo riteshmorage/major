@@ -1,0 +1,256 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome - Fetal Brain AI Detection{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center min-vh-100">
+            <div class="col-lg-6">
+                <div class="hero-content">
+                    <div class="hero-badge">
+                        <i class="fas fa-microscope"></i>
+                        Advanced Medical AI
+                    </div>
+                    <h1 class="hero-title">
+                        Fetal Brain <span class="text-primary">Abnormality</span><br>
+                        Detection System
+                    </h1>
+                    <p class="hero-description">
+                        State-of-the-art AI-powered system for detecting and analyzing fetal brain abnormalities 
+                        using advanced YOLOv5 technology. Get accurate, instant results with confidence scores.
+                    </p>
+                    
+                    <div class="hero-features">
+                        <div class="feature-item">
+                            <i class="fas fa-brain feature-icon"></i>
+                            <div>
+                                <strong>14 Abnormalities</strong>
+                                <small>Comprehensive detection</small>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-chart-line feature-icon"></i>
+                            <div>
+                                <strong>95.5% Accuracy</strong>
+                                <small>Clinical-grade precision</small>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-clock feature-icon"></i>
+                            <div>
+                                <strong>Instant Results</strong>
+                                <small>Real-time analysis</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6">
+                <div class="auth-container">
+                    <!-- Login/Register Tabs -->
+                    <div class="auth-tabs">
+                        <ul class="nav nav-pills nav-justified" id="authTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="login-tab" data-bs-toggle="pill" 
+                                        data-bs-target="#login-panel" type="button" role="tab">
+                                    <i class="fas fa-sign-in-alt"></i> Login
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="register-tab" data-bs-toggle="pill" 
+                                        data-bs-target="#register-panel" type="button" role="tab">
+                                    <i class="fas fa-user-plus"></i> Register
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="tab-content" id="authTabContent">
+                        <!-- Login Panel -->
+                        <div class="tab-pane fade show active" id="login-panel" role="tabpanel">
+                            <div class="auth-form-container">
+                                <div class="form-header">
+                                    <h3><i class="fas fa-user-md"></i> Medical Professional Login</h3>
+                                    <p>Access your diagnostic dashboard</p>
+                                </div>
+                                
+                                <form method="POST" action="{{ url_for('login') }}" class="auth-form">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="loginUsername" 
+                                               name="username" placeholder="Username" required>
+                                        <label for="loginUsername">
+                                            <i class="fas fa-user"></i> Username
+                                        </label>
+                                    </div>
+                                    
+                                    <div class="form-floating mb-4">
+                                        <input type="password" class="form-control" id="loginPassword" 
+                                               name="password" placeholder="Password" required>
+                                        <label for="loginPassword">
+                                            <i class="fas fa-lock"></i> Password
+                                        </label>
+                                    </div>
+                                    
+                                    <button type="submit" class="btn btn-primary btn-lg w-100 auth-btn">
+                                        <i class="fas fa-sign-in-alt"></i> Access Dashboard
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Register Panel -->
+                        <div class="tab-pane fade" id="register-panel" role="tabpanel">
+                            <div class="auth-form-container">
+                                <div class="form-header">
+                                    <h3><i class="fas fa-user-plus"></i> Create Medical Account</h3>
+                                    <p>Join our medical AI platform</p>
+                                </div>
+                                
+                                <form method="POST" action="{{ url_for('register') }}" class="auth-form">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="registerUsername" 
+                                               name="username" placeholder="Username" required>
+                                        <label for="registerUsername">
+                                            <i class="fas fa-user"></i> Username
+                                        </label>
+                                    </div>
+                                    
+                                    <div class="form-floating mb-3">
+                                        <input type="email" class="form-control" id="registerEmail" 
+                                               name="email" placeholder="Email" required>
+                                        <label for="registerEmail">
+                                            <i class="fas fa-envelope"></i> Email Address
+                                        </label>
+                                    </div>
+                                    
+                                    <div class="form-floating mb-3">
+                                        <input type="tel" class="form-control" id="registerMobile" 
+                                               name="mobile" placeholder="Mobile">
+                                        <label for="registerMobile">
+                                            <i class="fas fa-phone"></i> Mobile Number
+                                        </label>
+                                    </div>
+                                    
+                                    <div class="form-floating mb-4">
+                                        <input type="password" class="form-control" id="registerPassword" 
+                                               name="password" placeholder="Password" required>
+                                        <label for="registerPassword">
+                                            <i class="fas fa-lock"></i> Password
+                                        </label>
+                                    </div>
+                                    
+                                    <button type="submit" class="btn btn-success btn-lg w-100 auth-btn">
+                                        <i class="fas fa-user-plus"></i> Create Account
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-section py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="section-title">Advanced AI Capabilities</h2>
+            <p class="section-subtitle">Comprehensive fetal brain analysis powered by cutting-edge technology</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h4>Multi-Class Detection</h4>
+                    <p>Detects 14 different types of fetal brain abnormalities with high accuracy and precision.</p>
+                    <ul class="feature-list">
+                        <li>Arnold Chiari malformation</li>
+                        <li>Ventriculomegaly (mild, moderate, severe)</li>
+                        <li>Holoprosencephaly</li>
+                        <li>And 11 more conditions...</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h4>High Accuracy</h4>
+                    <p>Clinical-grade accuracy with confidence scores and detailed analysis reports.</p>
+                    <ul class="feature-list">
+                        <li>95.5% overall accuracy</li>
+                        <li>Confidence score reporting</li>
+                        <li>Detailed analysis metrics</li>
+                        <li>False positive minimization</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper">
+                        <i class="fas fa-history"></i>
+                    </div>
+                    <h4>Complete History</h4>
+                    <p>Track and compare multiple analyses with comprehensive history management.</p>
+                    <ul class="feature-list">
+                        <li>Analysis history tracking</li>
+                        <li>Comparative analysis</li>
+                        <li>Export capabilities</li>
+                        <li>Secure data storage</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Enhanced login/register form interactions
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add smooth transitions to auth tabs
+        const authTabs = document.querySelectorAll('#authTabs button');
+        authTabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                // Add loading effect
+                const spinner = '<i class="fas fa-spinner fa-spin me-2"></i>';
+                const originalContent = this.innerHTML;
+                
+                setTimeout(() => {
+                    this.innerHTML = originalContent;
+                }, 300);
+            });
+        });
+        
+        // Form validation enhancement
+        const forms = document.querySelectorAll('.auth-form');
+        forms.forEach(form => {
+            form.addEventListener('submit', function(e) {
+                const submitBtn = form.querySelector('button[type="submit"]');
+                const originalText = submitBtn.innerHTML;
+                
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
+                submitBtn.disabled = true;
+                
+                // Re-enable after 3 seconds (in case of error)
+                setTimeout(() => {
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                }, 3000);
+            });
+        });
+    });
+</script>
+{% endblock %}

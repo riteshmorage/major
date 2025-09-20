@@ -1,0 +1,661 @@
+{% extends "base.html" %}
+
+{% block title %}About - Fetal Brain AI Detection{% endblock %}
+
+{% block content %}
+<div class="about-wrapper">
+    <!-- About Header -->
+    <section class="about-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <div class="page-title">
+                        <h1><i class="fas fa-info-circle"></i> About Our System</h1>
+                        <p class="page-subtitle">
+                            Advanced AI-powered fetal brain abnormality detection using state-of-the-art technology
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-4 text-end">
+                    {% if session.user_id %}
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-primary">
+                        <i class="fas fa-tachometer-alt"></i> Back to Dashboard
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <!-- System Overview -->
+        <div class="row mb-5">
+            <div class="col-lg-8 mx-auto">
+                <div class="overview-card">
+                    <div class="card-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h2>Fetal Brain Abnormality Detection System</h2>
+                    <p class="lead">
+                        Our advanced AI system uses YOLOv5 deep learning technology to detect and classify 
+                        fetal brain abnormalities with clinical-grade accuracy. Designed for medical 
+                        professionals and researchers, it provides instant, reliable analysis of medical images.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Model Information -->
+        <div class="row mb-5">
+            <div class="col-lg-6">
+                <div class="info-card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-cogs"></i> Technical Specifications</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="spec-item">
+                            <strong>Model Architecture:</strong>
+                            <span>{{ model_info.model_type }} (You Only Look Once v5)</span>
+                        </div>
+                        <div class="spec-item">
+                            <strong>Accuracy Rate:</strong>
+                            <span class="accuracy-badge">{{ model_info.accuracy }}</span>
+                        </div>
+                        <div class="spec-item">
+                            <strong>Training Dataset:</strong>
+                            <span>{{ model_info.training_images }} medical images</span>
+                        </div>
+                        <div class="spec-item">
+                            <strong>Detection Classes:</strong>
+                            <span>{{ model_info.classes|length }} abnormality types</span>
+                        </div>
+                        <div class="spec-item">
+                            <strong>Last Updated:</strong>
+                            <span>{{ model_info.last_updated }}</span>
+                        </div>
+                        <div class="spec-item">
+                            <strong>Input Formats:</strong>
+                            <span>JPEG, PNG, GIF, BMP, TIFF</span>
+                        </div>
+                        <div class="spec-item">
+                            <strong>Processing Time:</strong>
+                            <span>< 3 seconds per image</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6">
+                <div class="info-card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-list-alt"></i> Detectable Conditions</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="conditions-grid">
+                            {% for condition in model_info.classes %}
+                            <div class="condition-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>{{ condition }}</span>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Technology Stack -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <div class="tech-stack-card">
+                    <h3><i class="fas fa-layer-group"></i> Technology Stack</h3>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-6 mb-4">
+                            <div class="tech-item">
+                                <div class="tech-icon">
+                                    <i class="fab fa-python"></i>
+                                </div>
+                                <h5>Backend</h5>
+                                <ul>
+                                    <li>Python 3.8+</li>
+                                    <li>Flask Framework</li>
+                                    <li>PyTorch</li>
+                                    <li>OpenCV</li>
+                                    <li>NumPy/Pandas</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-3 col-md-6 mb-4">
+                            <div class="tech-item">
+                                <div class="tech-icon">
+                                    <i class="fab fa-js-square"></i>
+                                </div>
+                                <h5>Frontend</h5>
+                                <ul>
+                                    <li>HTML5/CSS3</li>
+                                    <li>Bootstrap 5</li>
+                                    <li>JavaScript ES6+</li>
+                                    <li>Font Awesome</li>
+                                    <li>Responsive Design</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-3 col-md-6 mb-4">
+                            <div class="tech-item">
+                                <div class="tech-icon">
+                                    <i class="fas fa-database"></i>
+                                </div>
+                                <h5>Database</h5>
+                                <ul>
+                                    <li>SQLite</li>
+                                    <li>User Management</li>
+                                    <li>Analysis History</li>
+                                    <li>Secure Storage</li>
+                                    <li>Data Encryption</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-3 col-md-6 mb-4">
+                            <div class="tech-item">
+                                <div class="tech-icon">
+                                    <i class="fas fa-brain"></i>
+                                </div>
+                                <h5>AI/ML</h5>
+                                <ul>
+                                    <li>YOLOv5 Model</li>
+                                    <li>Computer Vision</li>
+                                    <li>Deep Learning</li>
+                                    <li>Real-time Inference</li>
+                                    <li>Confidence Scoring</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features & Benefits -->
+        <div class="row mb-5">
+            <div class="col-lg-6">
+                <div class="features-card">
+                    <h3><i class="fas fa-star"></i> Key Features</h3>
+                    <div class="feature-list">
+                        <div class="feature-item">
+                            <i class="fas fa-upload text-primary"></i>
+                            <div>
+                                <h5>Drag & Drop Upload</h5>
+                                <p>Intuitive image upload with preview and validation</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-bolt text-warning"></i>
+                            <div>
+                                <h5>Real-time Analysis</h5>
+                                <p>Instant processing with live progress indicators</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-chart-line text-success"></i>
+                            <div>
+                                <h5>Confidence Scoring</h5>
+                                <p>Detailed confidence metrics for each detection</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-history text-info"></i>
+                            <div>
+                                <h5>Analysis History</h5>
+                                <p>Complete tracking of all previous analyses</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-mobile-alt text-purple"></i>
+                            <div>
+                                <h5>Responsive Design</h5>
+                                <p>Works seamlessly on desktop, tablet, and mobile</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-shield-alt text-secondary"></i>
+                            <div>
+                                <h5>Secure & Private</h5>
+                                <p>Advanced security measures and data protection</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6">
+                <div class="benefits-card">
+                    <h3><i class="fas fa-trophy"></i> Benefits</h3>
+                    <div class="benefit-list">
+                        <div class="benefit-item">
+                            <div class="benefit-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="benefit-content">
+                                <h5>Time Efficient</h5>
+                                <p>Reduce analysis time from hours to seconds with automated detection</p>
+                            </div>
+                        </div>
+                        <div class="benefit-item">
+                            <div class="benefit-icon">
+                                <i class="fas fa-bullseye"></i>
+                            </div>
+                            <div class="benefit-content">
+                                <h5>High Accuracy</h5>
+                                <p>Clinical-grade precision with 95.5% accuracy rate in detection</p>
+                            </div>
+                        </div>
+                        <div class="benefit-item">
+                            <div class="benefit-icon">
+                                <i class="fas fa-user-md"></i>
+                            </div>
+                            <div class="benefit-content">
+                                <h5>Decision Support</h5>
+                                <p>Assist medical professionals with reliable diagnostic insights</p>
+                            </div>
+                        </div>
+                        <div class="benefit-item">
+                            <div class="benefit-icon">
+                                <i class="fas fa-chart-bar"></i>
+                            </div>
+                            <div class="benefit-content">
+                                <h5>Comprehensive Reports</h5>
+                                <p>Detailed analysis reports with confidence metrics and recommendations</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Medical Disclaimer -->
+        <div class="row">
+            <div class="col-12">
+                <div class="disclaimer-card">
+                    <div class="disclaimer-header">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h3>Important Medical Disclaimer</h3>
+                    </div>
+                    <div class="disclaimer-content">
+                        <p><strong>FOR RESEARCH AND EDUCATIONAL PURPOSES ONLY</strong></p>
+                        <p>
+                            This AI-powered fetal brain abnormality detection system is designed for research 
+                            and educational purposes. While our system achieves high accuracy rates, it should 
+                            <strong>NOT</strong> be used as the sole basis for medical diagnosis or treatment decisions.
+                        </p>
+                        <ul class="disclaimer-list">
+                            <li>Always consult with qualified medical professionals for clinical decisions</li>
+                            <li>This system is intended to assist, not replace, medical expertise</li>
+                            <li>All results should be validated by certified radiologists or medical specialists</li>
+                            <li>The system is not FDA approved for clinical diagnostic use</li>
+                            <li>Results may vary based on image quality and acquisition parameters</li>
+                        </ul>
+                        <p class="disclaimer-footer">
+                            <strong>Contact your healthcare provider for proper medical evaluation and diagnosis.</strong>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.about-wrapper {
+    min-heap: 100vh;
+    background: var(--bg-secondary);
+}
+
+.about-header {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    color: white;
+    padding: 2rem 0;
+    margin-bottom: 3rem;
+}
+
+.overview-card {
+    background: var(--bg-primary);
+    border-radius: var(--radius-xl);
+    padding: 3rem;
+    text-align: center;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.overview-card .card-icon {
+    width: 5rem;
+    height: 5rem;
+    background: var(--gradient-primary);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    margin: 0 auto 2rem auto;
+}
+
+.overview-card h2 {
+    color: var(--text-primary);
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+
+.info-card {
+    background: var(--bg-primary);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    height: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.info-card .card-header {
+    background: var(--bg-secondary);
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--bg-tertiary);
+}
+
+.info-card .card-header h3 {
+    color: var(--text-primary);
+    font-weight: 600;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.info-card .card-body {
+    padding: 1.5rem;
+}
+
+.spec-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--bg-tertiary);
+}
+
+.spec-item:last-child {
+    border-bottom: none;
+}
+
+.spec-item strong {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.spec-item span {
+    color: var(--text-secondary);
+    text-align: right;
+}
+
+.accuracy-badge {
+    background: var(--gradient-secondary);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.conditions-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+}
+
+.condition-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem;
+    background: var(--bg-secondary);
+    border-radius: var(--radius-md);
+    font-size: 0.875rem;
+}
+
+.condition-item i {
+    color: var(--success-color);
+    font-size: 1rem;
+}
+
+.tech-stack-card {
+    background: var(--bg-primary);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    box-shadow: var(--shadow-md);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.tech-stack-card h3 {
+    color: var(--text-primary);
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.tech-item {
+    text-align: center;
+    height: 100%;
+}
+
+.tech-icon {
+    width: 4rem;
+    height: 4rem;
+    background: var(--gradient-primary);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    margin: 0 auto 1rem auto;
+}
+
+.tech-item h5 {
+    color: var(--text-primary);
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.tech-item ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.tech-item li {
+    color: var(--text-secondary);
+    padding: 0.25rem 0;
+    font-size: 0.875rem;
+}
+
+.features-card, .benefits-card {
+    background: var(--bg-primary);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    box-shadow: var(--shadow-md);
+    height: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.features-card h3, .benefits-card h3 {
+    color: var(--text-primary);
+    font-weight: 700;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--bg-tertiary);
+}
+
+.feature-item:last-child {
+    border-bottom: none;
+}
+
+.feature-item i {
+    font-size: 1.5rem;
+    margin-top: 0.25rem;
+    flex-shrink: 0;
+}
+
+.feature-item h5 {
+    color: var(--text-primary);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+}
+
+.feature-item p {
+    color: var(--text-secondary);
+    margin: 0;
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+.benefit-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--bg-tertiary);
+}
+
+.benefit-item:last-child {
+    border-bottom: none;
+}
+
+.benefit-icon {
+    width: 3rem;
+    height: 3rem;
+    background: var(--bg-accent);
+    color: var(--primary-color);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    flex-shrink: 0;
+}
+
+.benefit-content h5 {
+    color: var(--text-primary);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.benefit-content p {
+    color: var(--text-secondary);
+    margin: 0;
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+.disclaimer-card {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(239, 68, 68, 0.05) 100%);
+    border: 2px solid rgba(239, 68, 68, 0.2);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    box-shadow: var(--shadow-md);
+}
+
+.disclaimer-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.disclaimer-header i {
+    font-size: 2rem;
+    color: var(--danger-color);
+}
+
+.disclaimer-header h3 {
+    color: var(--danger-color);
+    font-weight: 700;
+    margin: 0;
+}
+
+.disclaimer-content p {
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.disclaimer-list {
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem 0;
+}
+
+.disclaimer-list li {
+    color: var(--text-secondary);
+    padding: 0.5rem 0;
+    position: relative;
+    padding-left: 2rem;
+    line-height: 1.5;
+}
+
+.disclaimer-list li::before {
+    content: '⚠️';
+    position: absolute;
+    left: 0;
+    top: 0.5rem;
+}
+
+.disclaimer-footer {
+    background: rgba(239, 68, 68, 0.1);
+    padding: 1rem;
+    border-radius: var(--radius-md);
+    text-align: center;
+    margin-top: 1.5rem;
+    margin-bottom: 0;
+    color: var(--danger-color);
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .overview-card {
+        padding: 2rem;
+    }
+    
+    .tech-stack-card {
+        padding: 1.5rem;
+    }
+    
+    .features-card, .benefits-card {
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+    }
+    
+    .disclaimer-card {
+        padding: 1.5rem;
+    }
+    
+    .feature-item, .benefit-item {
+        padding: 0.75rem 0;
+    }
+}
+</style>
+{% endblock %}

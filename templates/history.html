@@ -1,0 +1,393 @@
+{% extends "base.html" %}
+
+{% block title %}Analysis History - Fetal Brain AI{% endblock %}
+
+{% block content %}
+<div class="history-wrapper">
+    <!-- History Header -->
+    <section class="history-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <div class="page-title">
+                        <h1><i class="fas fa-history"></i> Analysis History</h1>
+                        <p class="page-subtitle">
+                            View and manage your previous fetal brain scan analyses
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4 text-end">
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> New Analysis
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <!-- Statistics Cards -->
+        <div class="row mb-4">
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-file-medical"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>{{ analyses|length }}</h3>
+                        <p>Total Analyses</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-check-circle text-success"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>{{ analyses|selectattr('1', 'equalto', 'Normal Scan')|list|length }}</h3>
+                        <p>Normal Scans</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-exclamation-triangle text-warning"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>{{ analyses|length - analyses|selectattr('1', 'equalto', 'Normal Scan')|list|length }}</h3>
+                        <p>Abnormalities</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-percentage"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>{% if analyses %}{{ "%.1f"|format((analyses|map(attribute='2')|sum / analyses|length) * 100) }}%{% else %}0%{% endif %}</h3>
+                        <p>Avg. Confidence</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analysis History Table -->
+        <div class="history-content">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h5><i class="fas fa-list"></i> Analysis Records</h5>
+                        </div>
+                        <div class="col-auto">
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-outline-primary btn-sm" id="gridView">
+                                    <i class="fas fa-th"></i> Grid
+                                </button>
+                                <button type="button" class="btn btn-primary btn-sm" id="listView">
+                                    <i class="fas fa-list"></i> List
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    {% if analyses %}
+                        <!-- List View (Default) -->
+                        <div id="listViewContent">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th><i class="fas fa-image"></i> Image</th>
+                                            <th><i class="fas fa-brain"></i> Detection Result</th>
+                                            <th><i class="fas fa-percentage"></i> Confidence</th>
+                                            <th><i class="fas fa-calendar"></i> Date</th>
+                                            <th><i class="fas fa-cogs"></i> Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for analysis in analyses %}
+                                        <tr class="analysis-row">
+                                            <td>
+                                                <div class="image-cell">
+                                                    <img src="{{ url_for('static', filename='test/' + analysis[4]) }}" 
+                                                         alt="Brain scan" class="table-image">
+                                                    <div class="image-info">
+                                                        <strong>{{ analysis[0][:15] }}{% if analysis[0]|length > 15 %}...{% endif %}</strong>
+                                                        <small class="text-muted d-block">{{ analysis[0] }}</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="result-cell">
+                                                    {% if analysis[1] == 'Normal Scan' %}
+                                                        <span class="result-badge normal">
+                                                            <i class="fas fa-check-circle"></i> {{ analysis[1] }}
+                                                        </span>
+                                                    {% else %}
+                                                        <span class="result-badge abnormal">
+                                                            <i class="fas fa-exclamation-triangle"></i> {{ analysis[1] }}
+                                                        </span>
+                                                    {% endif %}
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="confidence-cell">
+                                                    <div class="confidence-bar-container">
+                                                        <div class="confidence-bar">
+                                                            <div class="confidence-fill" 
+                                                                 style="width: {{ analysis[2] * 100 }}%"></div>
+                                                        </div>
+                                                        <span class="confidence-text">{{ "%.1f"|format(analysis[2] * 100) }}%</span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="date-cell">
+                                                    <i class="fas fa-clock text-muted"></i>
+                                                    {{ analysis[3] }}
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="action-buttons">
+                                                    <button class="btn btn-sm btn-outline-primary" 
+                                                            onclick="viewDetails('{{ analysis[4] }}', '{{ analysis[0] }}', '{{ analysis[1] }}', {{ analysis[2] }})">
+                                                        <i class="fas fa-eye"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-success" 
+                                                            onclick="downloadReport('{{ analysis[4] }}')">
+                                                        <i class="fas fa-download"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Grid View (Hidden by default) -->
+                        <div id="gridViewContent" style="display: none;">
+                            <div class="row">
+                                {% for analysis in analyses %}
+                                <div class="col-lg-4 col-md-6 mb-4">
+                                    <div class="analysis-card">
+                                        <div class="card-image">
+                                            <img src="{{ url_for('static', filename='test/' + analysis[4]) }}" 
+                                                 alt="Brain scan" class="analysis-image">
+                                            <div class="image-overlay">
+                                                <button class="btn btn-light btn-sm" 
+                                                        onclick="viewDetails('{{ analysis[4] }}', '{{ analysis[0] }}', '{{ analysis[1] }}', {{ analysis[2] }})">
+                                                    <i class="fas fa-search-plus"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="card-content">
+                                            <h6 class="card-title">{{ analysis[0][:20] }}{% if analysis[0]|length > 20 %}...{% endif %}</h6>
+                                            
+                                            <div class="card-result">
+                                                {% if analysis[1] == 'Normal Scan' %}
+                                                    <span class="result-badge normal">
+                                                        <i class="fas fa-check-circle"></i> Normal
+                                                    </span>
+                                                {% else %}
+                                                    <span class="result-badge abnormal">
+                                                        <i class="fas fa-exclamation-triangle"></i> Abnormal
+                                                    </span>
+                                                {% endif %}
+                                            </div>
+                                            
+                                            <div class="card-confidence">
+                                                <small class="text-muted">Confidence</small>
+                                                <div class="confidence-bar-small">
+                                                    <div class="confidence-fill" style="width: {{ analysis[2] * 100 }}%"></div>
+                                                </div>
+                                                <span class="confidence-text-small">{{ "%.1f"|format(analysis[2] * 100) }}%</span>
+                                            </div>
+                                            
+                                            <div class="card-date">
+                                                <small class="text-muted">
+                                                    <i class="fas fa-calendar"></i> {{ analysis[3] }}
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="empty-state">
+                            <div class="text-center py-5">
+                                <i class="fas fa-inbox empty-icon"></i>
+                                <h4>No Analysis History</h4>
+                                <p class="text-muted">You haven't performed any brain scan analyses yet.</p>
+                                <a href="{{ url_for('dashboard') }}" class="btn btn-primary">
+                                    <i class="fas fa-upload"></i> Upload Your First Scan
+                                </a>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Detail Modal -->
+<div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detailModalLabel">
+                    <i class="fas fa-file-medical"></i> Analysis Details
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Dynamic content will be loaded here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="downloadBtn">
+                    <i class="fas fa-download"></i> Download Report
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // History page functionality
+    class AnalysisHistory {
+        constructor() {
+            this.initializeViewToggle();
+            this.bindEvents();
+        }
+
+        initializeViewToggle() {
+            const gridViewBtn = document.getElementById('gridView');
+            const listViewBtn = document.getElementById('listView');
+            const gridContent = document.getElementById('gridViewContent');
+            const listContent = document.getElementById('listViewContent');
+
+            gridViewBtn.addEventListener('click', () => {
+                gridContent.style.display = 'block';
+                listContent.style.display = 'none';
+                gridViewBtn.classList.add('btn-primary');
+                gridViewBtn.classList.remove('btn-outline-primary');
+                listViewBtn.classList.add('btn-outline-primary');
+                listViewBtn.classList.remove('btn-primary');
+            });
+
+            listViewBtn.addEventListener('click', () => {
+                listContent.style.display = 'block';
+                gridContent.style.display = 'none';
+                listViewBtn.classList.add('btn-primary');
+                listViewBtn.classList.remove('btn-outline-primary');
+                gridViewBtn.classList.add('btn-outline-primary');
+                gridViewBtn.classList.remove('btn-primary');
+            });
+        }
+
+        bindEvents() {
+            // Add any additional event bindings
+        }
+    }
+
+    // Global functions for template usage
+    function viewDetails(filename, originalName, result, confidence) {
+        const modalBody = document.getElementById('modalBody');
+        
+        modalBody.innerHTML = `
+            <div class="row">
+                <div class="col-md-6">
+                    <h6><i class="fas fa-image"></i> Original Scan</h6>
+                    <img src="/static/test/${filename}" class="img-fluid rounded mb-3" alt="Original scan">
+                </div>
+                <div class="col-md-6">
+                    <h6><i class="fas fa-chart-bar"></i> Analysis Results</h6>
+                    <div class="detail-info">
+                        <div class="info-item">
+                            <strong>File Name:</strong>
+                            <span>${originalName}</span>
+                        </div>
+                        <div class="info-item">
+                            <strong>Detection Result:</strong>
+                            <span class="result-badge ${result === 'Normal Scan' ? 'normal' : 'abnormal'}">
+                                ${result}
+                            </span>
+                        </div>
+                        <div class="info-item">
+                            <strong>Confidence Score:</strong>
+                            <div class="confidence-display-modal">
+                                <div class="confidence-circle-modal ${confidence >= 0.9 ? 'high' : confidence >= 0.7 ? 'medium' : 'low'}">
+                                    <span>${Math.round(confidence * 100)}%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <strong>Model Used:</strong>
+                            <span>YOLOv5 Fetal Brain Detection</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="alert alert-info">
+                <strong><i class="fas fa-info-circle"></i> Medical Disclaimer:</strong>
+                This AI analysis is for research and educational purposes only. 
+                Always consult qualified medical professionals for clinical decisions.
+            </div>
+        `;
+        
+        // Set download button action
+        const downloadBtn = document.getElementById('downloadBtn');
+        downloadBtn.onclick = () => downloadReport(filename);
+        
+        // Show modal
+        const modal = new bootstrap.Modal(document.getElementById('detailModal'));
+        modal.show();
+    }
+
+    function downloadReport(filename) {
+        // Create a simple report download
+        const reportContent = `
+Fetal Brain Abnormality Detection Report
+=======================================
+
+Analysis Date: ${new Date().toLocaleString()}
+Image File: ${filename}
+Model: YOLOv5 Fetal Brain Detection System
+
+This is a sample report format. In a real implementation,
+this would contain detailed analysis results and medical information.
+
+DISCLAIMER: This analysis is for research purposes only.
+Always consult medical professionals for clinical decisions.
+        `;
+        
+        const blob = new Blob([reportContent], { type: 'text/plain' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `brain_analysis_report_${filename}.txt`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+    }
+
+    // Initialize when DOM is ready
+    document.addEventListener('DOMContentLoaded', function() {
+        new AnalysisHistory();
+    });
+</script>
+{% endblock %}
